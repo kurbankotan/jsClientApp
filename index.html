@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="getProducts()">Get Products</button>
+
+
+    <div id="divProducts">
+
+    </div>
+
+
+
+    <script>
+        const getProducts = async () => {
+
+          const response = await fetch("https://localhost:7201/api/products") //API'nin yayınlandığı adres olmalı. Değiştir
+          const products = response.json();
+
+            displayProducts(products);                                        //Bilgileri sayfa üzerinde göster
+
+        }
+
+        const displayProducts = (products) =>{                                //function displayProducts(products){ } ile aynı
+            
+            const parent = document.getElementById("divProducts");
+            products.forEach(prd => {
+                                                            // Dikkat aşağıdaki 2 tane back tick işareti arasına yazılacak
+                    parent.innerHTML += `                         
+                                            <div>
+                                                <h5>${prd.productName}</h5>
+                                                <h5>${prd.price}</h5>
+                                            </div>
+                                        `;                                 
+            });
+        }
+
+    </script>
+</body>
+</html>
