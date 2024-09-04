@@ -7,7 +7,8 @@
 </head>
 <body>
     <button onclick="getProducts()">Get Products</button>
-
+    <button onclick="getProductById()">Get Product</button>
+    <button onclick="login()">Login</button>
 
     <div id="divProducts">
                                             
@@ -16,6 +17,22 @@
 
 
     <script>
+
+        const login = async () => {
+            const response = await fetch("https://localhost:7201/api/users/login", {
+                        headers:{
+                            "Accept": "application/json",
+                            "Content-Type": "application/json"
+                        },
+                        method: "POST",
+                        body: JSON.stringify({email: 'kurban@kotan.com', password: '123456'}) //Bunlar için arayüz yap ve dışardan giriş yapılsın
+            });
+
+            const result = await response.json();
+            //console.log(result);
+            localStorage.setItem("token", JSON.stringify(result.token));
+        }
+
         const getProducts = async () => {
 
           const response = await fetch("https://localhost:7201/api/products") //API'nin yayınlandığı adres olmalı. Değiştir
@@ -24,6 +41,22 @@
             displayProducts(products);                                        //Bilgileri sayfa üzerinde göster
 
         }
+
+
+        const getProductById = async () =>{
+            const token = JSON.parse(localStorage.getItem("token"));
+            const response = await fetch("https://localhost:7201/api/products/2", {
+                headers:{Authorization: `Bearer ${token}`}
+            }); //API'nin yayınlandığı adres olmalı. Değiştir.
+            
+            const product = await response.json()                                  // Ve burası için ürün ID'nin giriş yapılabileceği bir arayüz yap
+            //console.log(product); 
+            displayProduct(product);  
+        }
+
+
+
+
 
         const displayProducts = (products) =>{                                //function displayProducts(products){ } ile aynı
             
@@ -38,6 +71,22 @@
                                         `;                                 
             });
         }
+
+
+
+        const displayProduct = (product) =>{                                //function displayProducts(products){ } ile aynı
+            
+            const parent = document.getElementById("divProducts");
+
+                    parent.innerHTML = `                         
+                                            <div>
+                                                <h5>${product.productName}</h5>
+                                                <h5>${product.price}</h5>
+                                            </div>
+                                        `;                                 
+        }
+
+
 
     </script>
 </body>
