@@ -10,7 +10,7 @@
 
 
     <div id="divProducts">
-
+                                            
     </div>
 
 
@@ -19,8 +19,8 @@
         const getProducts = async () => {
 
           const response = await fetch("https://localhost:7201/api/products") //API'nin yayınlandığı adres olmalı. Değiştir
-          const products = response.json();
-
+          const products = await response.json();
+          console.log(products);                                               //Console'da gelen products bilgilerini görelim
             displayProducts(products);                                        //Bilgileri sayfa üzerinde göster
 
         }
